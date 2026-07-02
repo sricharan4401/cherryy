@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise for Sri!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            background-color: #07090e;
+        }
+
+        /* --- PREMIUM LIVE AURORA INTERACTIVE BACKGROUND --- */
+        .background-gradient {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(125deg, #0a0f1d 0%, #07080c 50%, #150d22 100%);
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* Animated glowing mesh blurs */
+        .background-gradient::before, .background-gradient::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 100%);
+            filter: blur(80px);
+            animation: floatAurora 12s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        .background-gradient::after {
+            width: 600px;
+            height: 600px;
+            right: -10%;
+            top: -10%;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.12) 0%, rgba(212, 175, 55, 0.03) 60%, transparent 100%);
+            animation-duration: 16s;
+            animation-delay: -4s;
+        }
+
+        @keyframes floatAurora {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(80px, 60px) scale(1.2); }
+            100% { transform: translate(-40px, 120px) scale(0.9); }
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 24px;
+            z-index: 2;
+        }
+
+        .active {
+            display: flex;
+        }
+
+        /* --- UI COMPONENTS --- */
+        .btn {
+            margin-top: 40px;
+            padding: 16px 36px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Glass Cards Container Base */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border-radius: 28px;
+            padding: 45px 35px;
+            width: 90%;
+            z-index: 2;
+        }
+
+        /* --- INDIVIDUAL PAGES CUSTOM STYLES --- */
+        .royal-text {
+            font-family: 'Cinzel', serif;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 3.2rem;
+            letter-spacing: 3px;
+            text-shadow: 0 0 25px rgba(255,255,255,0.25);
+            line-height: 1.4;
+        }
+
+        .cake {
+            font-size: 9rem;
+            cursor: pointer;
+            filter: drop-shadow(0 15px 30px rgba(255, 215, 0, 0.25));
+            animation: bounce 2.5s infinite ease-in-out;
+            z-index: 5;
+            transition: transform 0.2s;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .photo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .photo-container img {
+            max-height: 75vh;
+            border-radius: 16px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            object-fit: contain;
+        }
+
+        #page5 .btn {
+            background: #ffffff;
+            color: #07090e;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #page5 .btn.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 600px) {
+            .royal-text { font-size: 2.2rem; }
+            .cake { font-size: 6.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PERSISTENT LIVE BEAUTIFUL BACKGROUND OVERLAY -->
+    <div class="background-gradient"></div>
+
+    <!-- PAGE 1 -->
+    <div id="page1" class="page active">
+        <canvas class="stars" id="stars1"></canvas>
+        <div style="font-weight: 600; font-size: 2.2rem; color: #ffffff; letter-spacing: 0.5px; line-height: 1.7; max-width: 800px; text-shadow: 0 0 20px rgba(255, 255, 255, 0.15); padding: 0 20px; z-index: 2;">
+            Link pettagane cherry gadu edo surprise plan chesadu anukkav kada 😂🤣
+        </div>
+        <button class="btn" onclick="nextPage(2)">press enter to see the surprise</button>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div id="page2" class="page">
+        <canvas class="stars" id="stars2"></canvas>
+        <div class="royal-text">press enter to see the surprise, Chudagane nijam ga edo untadi ani anukunnav kada ney srii😂🤣🤣</div>
+        <button class="btn" id="trollBtn" onmouseover="moveButton()" onclick="handleTrollClick()">press enter to see the surprise</button>
+    </div>
+
+    <!-- PAGE 3 -->
+    <div id="page3" class="page">
+        <canvas id="confettiCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3;"></canvas>
+        <div class="cake" onclick="nextPage(4)">🎂</div>
+        <button class="btn" onclick="nextPage(4)" style="background: linear-gradient(45deg, #ffd700, #ff4e50); border: none; color: white;">click the cake</button>
+    </div>
+
+    <!-- PAGE 4 -->
+   <div id="page4" class="page" style="justify-content: center; overflow-y: auto; padding: 40px 0;">
+        <div class="photo-container" style="height: auto; max-height: 72vh; margin-top: 20px;">
+            <img id="sriPhoto" src="sri.jpeg" onerror="this.onerror=function(){this.onerror=function(){this.onerror=function(){this.src='sri.png';};this.src='sri.png';};this.src='sri.JPG';};this.src='sri.jpg';" alt="Sri's Photo">
+        </div>
+        <button class="btn" style="position: relative; margin-top: 30px; margin-bottom: 20px;" onclick="nextPage(5)">press enter</button>
+    </div>
+
+    <!-- PAGE 5 -->
+    <div id="page5" class="page">
+        <canvas class="stars" id="stars3"></canvas>
+        <div class="glass-panel" style="max-width: 600px; min-height: 440px; display: flex; align-items: center;">
+            <div id="typewriter" style="font-size: 1.05rem; font-weight: 300; color: #f0f4f8; line-height: 1.8; text-align: left; white-space: pre-wrap; letter-spacing: 0.3px; width: 100%;"></div>
+        </div>
+        <button class="btn" id="letterBtn" onclick="nextPage(6)">press enter</button>
+    </div>
+
+    <!-- PAGE 6 -->
+    <div id="page6" class="page">
+        <canvas class="stars" id="stars4"></canvas>
+        <div class="glass-panel" style="max-width: 750px; border-color: rgba(212, 175, 55, 0.15); background: rgba(255, 215, 0, 0.01);">
+            <div style="font-size: 2rem; color: #d4af37; margin-bottom: 25px; filter: drop-shadow(0 0 10px rgba(212,175,55,0.3));">✨</div>
+            <div style="font-weight: 300; font-size: 1.8rem; color: #f4ece1; letter-spacing: 0.8px; line-height: 1.9; text-align: center;">
+                Sare ley once again Appii Baaaaaddaaayyyy rhh BAABBUUUU!!! ❤️🤣🕺🏽<br><br>
+                <span style="font-size: 1.5rem; opacity: 0.8;">Manam malli eppudu goduva pettukuntamoo teliyadu kani aa <span style="color: #d4af37; font-weight: 500; text-shadow: 0 0 15px rgba(212,175,55,0.4);">cake thinuu</span> manchiga pandi laga 🐷❤️</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let moveCount = 0;
+        const maxMoves = 5;
+
+        const letterMessage = `Happy Birthday to my favorite Srii! 🎂🥳\n\nHappy Birthday! 🎈 I was going to write something incredibly emotional, but then I remembered how truly ridiculous we are. 🤪\n\nThank you for the endless, late-night talks that leave us entirely sleep-deprived 🥱💬, and for all the incredibly stupid things we’ve done together 🫡🏆. I also want to give us a quick shoutout for those times we didn't talk for months because we were both being stubborn over the pettiest, smallest fights in human history 😅🤫. The fact that we survived our own drama just proves we are stuck together for life! 🔗✨\n\nLife would be incredibly boring (and way more peaceful, honestly) without you. 🤷🏽‍♀️😂 Cheers to another year of making terrible decisions and laughing about them later! 🥂💃🏽\n\nCherryy 🫶🏽`;
+
+        function nextPage(pageNum) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(`page${pageNum}`).classList.add('active');
+            
+            if (pageNum === 3) { initConfetti(); }
+            if (pageNum === 5) { startTypewriter(); }
+        }
+
+        function moveButton() {
+            if (moveCount < maxMoves) {
+                const btn = document.getElementById('trollBtn');
+                const x = Math.random() * (window.innerWidth - btn.offsetWidth - 60) + 30;
+                const y = Math.random() * (window.innerHeight - btn.offsetHeight - 60) + 30;
+                btn.style.position = 'absolute';
+                btn.style.left = `${x}px`;
+                btn.style.top = `${y}px`;
+                moveCount++;
+            }
+        }
+
+        function handleTrollClick() {
+            if (moveCount < maxMoves) { moveButton(); } else { nextPage(3); }
+        }
+
+        function startTypewriter() {
+            const element = document.getElementById('typewriter');
+            const btn = document.getElementById('letterBtn');
+            element.innerHTML = "";
+            let i = 0;
+            
+            function type() {
+                if (i < letterMessage.length) {
+                    element.innerHTML += letterMessage.charAt(i);
+                    i++;
+                    setTimeout(type, 40);
+                } else {
+                    btn.classList.add('show');
+                }
+            }
+            type();
+        }
+
+        // Enter Key Mapping
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const activePage = document.querySelector('.page.active');
+                if (!activePage) return;
+                const pageId = activePage.id;
+
+                if (pageId === 'page1') nextPage(2);
+                else if (pageId === 'page2') handleTrollClick();
+                else if (pageId === 'page3') nextPage(4);
+                else if (pageId === 'page4') nextPage(5);
+                else if (pageId === 'page5' && document.getElementById('letterBtn').classList.contains('show')) nextPage(6);
+            }
+        });
+
+        // Floating Micro Star Particles Engine
+        function createAmbientParticles(canvasId, particleColor) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 1.5 + 0.5;
+                    this.alpha = Math.random() * 0.4 + 0.1;
+                    this.speedY = -(Math.random() * 0.2 + 0.05);
+                }
+                update() {
+                    this.y += this.speedY;
+                    if (this.y < 0) {
+                        this.y = canvas.height;
+                        this.x = Math.random() * canvas.width;
+                    }
+                }
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.alpha;
+                    ctx.fillStyle = particleColor;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            for(let i=0; i<30; i++) { particles.push(new Particle()); }
+
+            function loop() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+        createAmbientParticles('stars1', '#ffffff');
+        createAmbientParticles('stars2', '#ffffff');
+        createAmbientParticles('stars3', '#ffffff');
+        createAmbientParticles('stars4', '#ffd700');
+
+        // Confetti Engine
+        function initConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let pieces = [];
+            const colors = ['#ffd700', '#ff007f', '#00fff0', '#00ff00', '#ff9900', '#ffffff'];
+
+            class Paper {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height - canvas.height;
+                    this.rotation = Math.random() * 360;
+                    this.rotationSpeed = Math.random() * 8 - 4;
+                    this.width = Math.random() * 7 + 6;
+                    this.height = Math.random() * 14 + 10;
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    this.speed = Math.random() * 5 + 4;
+                }
+                update() {
+                    this.y += this.speed;
+                    this.rotation += this.rotationSpeed;
+                    if (this.y > canvas.height) { this.y = -20; this.x = Math.random() * canvas.width; }
+                }
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x + this.width/2, this.y + this.height/2);
+                    ctx.rotate(this.rotation * Math.PI / 180);
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(-this.width/2, -this.height/2, this.width, this.height);
+                    ctx.restore();
+                }
+            }
+
+            for (let i = 0; i < 150; i++) { pieces.push(new Paper()); }
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+    </script>
+</body>
+</html>
